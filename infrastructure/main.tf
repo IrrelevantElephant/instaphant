@@ -7,7 +7,7 @@ terraform {
 }
 
 variable "custom_dns" {
-  
+  type = string
 }
 
 resource "ns1_zone" "zone" {
