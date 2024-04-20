@@ -1,4 +1,15 @@
-import { useEffect, useState } from "react";
+import { useQuery, gql } from "@apollo/client";
+
+const GET_POSTS = gql`
+  query GetPosts {
+    posts {
+      id
+      description
+      image
+      user
+    }
+  }
+`;
 
 type Post = {
   id: string;
@@ -8,25 +19,14 @@ type Post = {
 };
 
 const Feed = () => {
-  const [posts, setPosts] = useState<Array<Post>>([]);
+  const { loading, error, data } = useQuery(GET_POSTS);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch("/api/posts");
-      if (!data.ok) {
-        return;
-      }
-      const json = await data.json();
-      console.log({ json });
-      setPosts(json.posts);
-    };
-
-    fetchData().catch(console.error);
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
 
   return (
     <div>
-      {posts.map((post) => (
+      {data.posts.map((post: Post) => (
         <div key={post.id}>
           <h3>{post.user}</h3>
           <img src={post.image} alt={post.description} />

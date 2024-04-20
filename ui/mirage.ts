@@ -1,4 +1,22 @@
 import { Model, createServer } from "miragejs";
+import { createGraphQLHandler } from "@miragejs/graphql"
+
+const gqlSchema = `
+type Post {
+  id: String!
+  user: String!
+  description: String!
+  image: String!
+}
+
+type Query {
+  posts: [Post!]!
+}
+
+schema {
+  query: Query
+}
+`;
 
 const makeServer = () => {
   createServer({
@@ -34,10 +52,9 @@ const makeServer = () => {
     },
 
     routes() {
-      this.get("/api/posts"),
-        (schema: any) => {
-          return schema.posts.all();
-        };
+      const graphQLHandler = createGraphQLHandler(gqlSchema, this.schema);
+
+      this.post("/graphql", graphQLHandler);
     },
   });
 };
