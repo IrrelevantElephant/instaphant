@@ -3,10 +3,8 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import {makeServer} from '../mirage.ts';
 import Feed from "./Feed";
 
-if (process.env.NODE_ENV === "development") {
-  makeServer();
-}
-
+// TODO: Lock this behind env var when we have a real api.
+makeServer();
 
 const client = new ApolloClient({
   uri: "/graphql",
