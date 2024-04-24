@@ -12,6 +12,9 @@ const GET_POSTS = gql`
       }
       comments {
         text
+        author {
+          name
+        }
       }
     }
   }
@@ -36,7 +39,7 @@ const Feed = () => {
             <div className="comment-section">
               {post.comments && post.comments.length > 0 ? (
                 post.comments.map((comment, index) => (
-                  <div key={index} className="comment">{comment.text}</div>
+                  <div key={index} className="comment">{comment.author.name}: {comment.text}</div>
                 ))
               ) : (
                 <p className="comment">No comments yet :(</p>
