@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import { Post } from './Types';
+import Comments from "./Comments";
 
 const GET_POSTS = gql`
   query GetPosts {
@@ -36,15 +37,7 @@ const Feed = () => {
           <img src={post.image} alt={post.description} className="post-image" />
           <div className="post-description">
             <p>{post.description}</p>
-            <div className="comment-section">
-              {post.comments && post.comments.length > 0 ? (
-                post.comments.map((comment, index) => (
-                  <div key={index} className="comment">{comment.author.name}: {comment.text}</div>
-                ))
-              ) : (
-                <p className="comment">No comments yet :(</p>
-              )}
-            </div>
+            <Comments comments={post.comments}/>
           </div>
         </div>
       ))}

@@ -48,7 +48,7 @@ const GenerateFakeData = function (
     };
   });
 
-  const comments = [...Array(postCount * 20).keys()].map((id): Comment => {
+  const comments = [...Array(postCount * 10).keys()].map((id): Comment => {
     const authorId = faker.number.int({ min: 0, max: userCount - 1 });
     const author = users[authorId];
 

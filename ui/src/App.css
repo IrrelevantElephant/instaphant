@@ -97,12 +97,23 @@ body {
   padding: 10px 15px;
 }
 
-.comment-section {
-  border-top: 1px solid #2c2c2c;
-  padding-top: 10px;
-  color: #d1d1d1;
+.comment-container {
+  border-bottom: 1px solid #2c2c2c; /* Adds a subtle divider */
+  margin-bottom: 10px;
+  padding: 10px;
 }
 
-.comment {
-  font-size: 0.875rem;
+.comment-author {
+  font-weight: bold;
 }
+
+.comment-text {
+  margin-top: 5px;
+  text-align: justify;
+}
+
+.comment-timestamp {
+  font-size: 0.8rem;
+  color: #999;
+}
+
