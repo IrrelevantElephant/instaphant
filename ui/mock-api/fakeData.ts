@@ -1,4 +1,4 @@
-import { fa, fakerEN as faker } from "@faker-js/faker";
+import { fakerEN as faker } from "@faker-js/faker";
 
 export type Post = {
   id: string;
