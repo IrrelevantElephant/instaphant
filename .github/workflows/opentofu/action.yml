@@ -1,0 +1,24 @@
+name: "OpenTofu"
+description: "Deploy OpenTofu"
+runs:
+  using: "composite"
+  steps:
+
+    - name: OpenTofu Init
+      working-directory: ./infrastructure
+      run: tofu init -backend-config="bucket=${{ env.PROJECT_ID }}-tf-state"
+      shell: bash
+
+    - name: OpenTofu Format, Validate and Plan
+      working-directory: ./infrastructure
+      run: |
+        tofu fmt -check
+        tofu validate
+        tofu plan -input=false
+      shell: bash
+
+    - name: OpenTofu Apply
+      working-directory: ./infrastructure
+      if: github.ref == 'refs/heads/main'
+      run: tofu apply -auto-approve -input=false
+      shell: bash

@@ -1,5 +1,10 @@
 name: Pipeline
 
+env:
+  PROJECT_ID: instaphant
+  PROJECT_NUMBER: 78987012965
+  DOCKER_REGISTRY: instaphant
+
 on:
   push:
     branches: ["main"]
@@ -16,6 +21,95 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  tag:
+    name: "Tag repo"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Conventional Changelog Action
+        id: conventional_changelog
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          preset: conventionalcommits
+          github-token: ${{ secrets.github_token }}
+          skip-commit: true
+    outputs:
+      version: ${{ steps.conventional_changelog.outputs.version }}
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: tag
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - uses: "google-github-actions/auth@v2"
+        id: gcloud_auth
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: "projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/wif-pool/providers/wif-provider"
+          service_account: "default@${{ env.PROJECT_ID }}.iam.gserviceaccount.com"
+          token_format: access_token
+      - name: Login to GAR
+        uses: docker/login-action@v3
+        with:
+          registry: europe-west2-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.gcloud_auth.outputs.access_token }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/Dockerfile
+          platforms: linux/amd64
+          cache-from: type=registry,ref=europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:latest
+          push: true
+          tags: |
+            europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:latest
+            europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:${{ needs.tag.outputs.version }}
+    outputs:
+      image: europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:${{ needs.tag.outputs.version }}
+
+  opentofu:
+    name: "OpenTofu"
+    runs-on: ubuntu-latest
+    needs: docker
+    permissions:
+      contents: "read"
+      id-token: "write"
+    defaults:
+      run:
+        working-directory: ./infrastructure
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set Environment Variables
+        shell: bash
+        run: |
+          echo "TF_VAR_api_image=${{ needs.docker.outputs.image }}" >> $GITHUB_ENV
+          echo "TF_VAR_project_id=${{ env.PROJECT_ID }}" >> $GITHUB_ENV
+
+      - uses: "google-github-actions/auth@v2"
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: "projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/wif-pool/providers/wif-provider"
+          service_account: "default@${{ env.PROJECT_ID }}.iam.gserviceaccount.com"
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.6.0
+
+      - name: "Apply OpenTofu"
+        id: apply_opentofu
+        uses: ./.github/workflows/opentofu
+
   deploy:
     defaults:
       run:
