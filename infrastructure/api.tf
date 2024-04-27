@@ -2,7 +2,7 @@ resource "google_cloud_run_v2_service" "api" {
   name     = "cloudrun-service"
   location = var.region
   ingress  = "INGRESS_TRAFFIC_ALL"
-  project = var.project_id
+  project  = var.project_id
 
   template {
     containers {
