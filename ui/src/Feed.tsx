@@ -1,5 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
-import { Post } from './Types';
+import { Post } from "./Types";
 import Comments from "./Comments";
 
 const GET_POSTS = gql`
@@ -37,7 +37,7 @@ const Feed = () => {
           <img src={post.image} alt={post.description} className="post-image" />
           <div className="post-description">
             <p>{post.description}</p>
-            <Comments comments={post.comments}/>
+            <Comments comments={post.comments} />
           </div>
         </div>
       ))}

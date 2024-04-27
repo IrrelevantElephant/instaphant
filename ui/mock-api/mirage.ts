@@ -67,8 +67,11 @@ const makeServer = () => {
           author: server.schema.find("user", post.author),
           description: post.description,
           image: post.image,
-          comments: server.schema.find("comment", fakeComments.filter(c => c.postId === post.id).map(c => c.id)),
-        })
+          comments: server.schema.find(
+            "comment",
+            fakeComments.filter((c) => c.postId === post.id).map((c) => c.id),
+          ),
+        }),
       );
     },
 

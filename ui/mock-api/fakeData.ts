@@ -30,7 +30,7 @@ faker.seed(12345);
 
 const GenerateFakeData = function (
   userCount: number,
-  postCount: number
+  postCount: number,
 ): FakeData {
   const users = [...Array(userCount).keys()].map((id): User => {
     return { id: `user-${id}`, name: faker.person.fullName() };
@@ -56,11 +56,11 @@ const GenerateFakeData = function (
     const post = posts[postId];
 
     return {
-        id: `comment-${id}`,
-        author: author.id,
-        text: faker.lorem.sentence(),
-        postId: post.id
-    }
+      id: `comment-${id}`,
+      author: author.id,
+      text: faker.lorem.sentence(),
+      postId: post.id,
+    };
   });
 
   return {

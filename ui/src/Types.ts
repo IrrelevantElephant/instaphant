@@ -9,10 +9,10 @@ export type Post = {
 export type User = {
   id: string;
   name: string;
-}
+};
 
 export type Comment = {
   id: string;
   text: string;
   author: User;
-}
+};
