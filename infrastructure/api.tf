@@ -1,5 +1,5 @@
 resource "google_cloud_run_v2_service" "api" {
-  name     = "cloudrun-service"
+  name     = "api"
   location = var.region
   ingress  = "INGRESS_TRAFFIC_ALL"
   project  = var.project_id

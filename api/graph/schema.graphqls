@@ -1,0 +1,39 @@
+type User {
+  id: ID!
+  name: String!
+}
+
+type Post {
+  id: ID!
+  author: User!
+  description: String!
+  image: String!
+  comments: [Comment!]!
+}
+
+input PostInput {
+  author: String
+  description: String
+  image: String
+}
+
+type Comment {
+  id: ID!
+  author: User!
+  text: String!
+}
+
+type Query {
+  posts: [Post!]!
+  users: [User!]!
+  comments: [Comment!]!
+}
+
+type Mutation {
+  upsertPost(input: PostInput!): Post!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
