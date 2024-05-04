@@ -8,7 +8,7 @@ resource "google_cloud_run_v2_service" "api" {
     containers {
       image = var.api_image
       env {
-        name = "UIORIGIN"
+        name  = "UIORIGIN"
         value = "https://instaphant.irrelevantelephant.co.uk/"
       }
     }
