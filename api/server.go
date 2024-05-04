@@ -45,10 +45,6 @@ func getConfig() appConfig {
 		port = "8080"
 	}
 
-	if len(strings.TrimSpace(uiOrigin)) == 0 {
-		uiOrigin = "http://localhost:8000"
-	}
-
 	config := appConfig{
 		port:     port,
 		uiOrigin: uiOrigin,
