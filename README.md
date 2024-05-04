@@ -17,3 +17,17 @@ cd ./infrastructure
 tofu init
 tofu apply -var="custom_dns=$CUSTOM_DOMAIN" -auto-approve
 ```
+
+## Debugging
+
+To automatically rebuild changes:
+
+```shell
+docker compose -f Docker/docker-compose.yml watch --no-up
+```
+
+in separate terminal:
+
+```shell
+docker compose -f Docker/docker-compose.yml up
+```

@@ -16,7 +16,7 @@ type Post struct {
 	Author      *User      `json:"author"`
 	Description string     `json:"description"`
 	Image       string     `json:"image"`
-	Comments    []*Comment `json:"comments"`
+	Comments    []*Comment `json:"comments,omitempty"`
 }
 
 type PostInput struct {
