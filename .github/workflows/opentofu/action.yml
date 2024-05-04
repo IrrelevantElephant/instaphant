@@ -27,7 +27,7 @@ runs:
       shell: bash
 
     - name: Capture outputs
-      working-directory: ./infrastructure/terraform
+      working-directory: ./infrastructure
       id: capture_output
       run: |
         echo "app_url=$(terraform output -raw url)" >> $GITHUB_OUTPUT
