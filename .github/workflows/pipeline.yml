@@ -88,6 +88,8 @@ jobs:
     defaults:
       run:
         working-directory: ./infrastructure
+    outputs:
+      app_url: ${{steps.apply_opentofu.outputs.app_url}}
     steps:
       - uses: actions/checkout@v4
 
@@ -113,13 +115,14 @@ jobs:
         uses: ./.github/workflows/opentofu
 
   deploy:
+    needs: opentofu
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./ui/
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -130,7 +133,9 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
       - name: Build
-        run: pnpm run build
+        run: |
+          echo "VITE_API_URL=${{ needs.opentofu.outputs.app_url }}/query" >> .env.production
+          pnpm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

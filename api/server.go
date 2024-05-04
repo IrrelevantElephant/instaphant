@@ -9,35 +9,49 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/IrrelevantElephant/instaphant/api/graph"
+	"github.com/go-chi/chi/v5"
+	"github.com/rs/cors"
 )
 
-const defaultPort = "8080"
-
 type appConfig struct {
-	port string
+	port     string
+	uiOrigin string
 }
 
 func main() {
 	config := getConfig()
+	router := chi.NewRouter()
+
+	corsMiddleware := cors.New(cors.Options{
+		AllowedOrigins: []string{config.uiOrigin},
+	})
+
+	router.Use(corsMiddleware.Handler)
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", config.port)
-	log.Fatal(http.ListenAndServe(":"+config.port, nil))
+	log.Fatal(http.ListenAndServe(":"+config.port, router))
 }
 
 func getConfig() appConfig {
 	port := os.Getenv("PORT")
+	uiOrigin := os.Getenv("UIORIGIN")
 
 	if len(strings.TrimSpace(port)) == 0 {
 		port = "8080"
 	}
 
+	if len(strings.TrimSpace(uiOrigin)) == 0 {
+		uiOrigin = "http://localhost:8000"
+	}
+
 	config := appConfig{
-		port: port,
+		port:     port,
+		uiOrigin: uiOrigin,
 	}
 
 	return config

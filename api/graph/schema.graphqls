@@ -8,7 +8,7 @@ type Post {
   author: User!
   description: String!
   image: String!
-  comments: [Comment!]!
+  comments: [Comment!]
 }
 
 input PostInput {
@@ -24,6 +24,7 @@ type Comment {
 }
 
 type Query {
+  post(id:ID!): Post
   posts: [Post!]!
   users: [User!]!
   comments: [Comment!]!

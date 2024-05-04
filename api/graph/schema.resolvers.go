@@ -7,18 +7,16 @@ package graph
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/IrrelevantElephant/instaphant/api/graph/model"
-	"github.com/google/uuid"
 )
 
 // UpsertPost is the resolver for the upsertPost field.
 func (r *mutationResolver) UpsertPost(ctx context.Context, input model.PostInput) (*model.Post, error) {
-	id := strings.Replace(uuid.NewString(), "-", "", -1)
+	id := newId()
 	var post model.Post
 	post.Author = &model.User{
-		ID:   strings.Replace(uuid.NewString(), "-", "", -1),
+		ID:   newId(),
 		Name: *input.Author,
 	}
 	post.ID = id
@@ -34,9 +32,24 @@ func (r *mutationResolver) UpsertPost(ctx context.Context, input model.PostInput
 	return &post, nil
 }
 
+// Post is the resolver for the post field.
+func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error) {
+	post, ok := r.PostStore[id]
+	if !ok {
+		return nil, fmt.Errorf("not found")
+	}
+	return &post, nil
+}
+
 // Posts is the resolver for the posts field.
 func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
-	panic(fmt.Errorf("not implemented: Posts - posts"))
+	posts := make([]*model.Post, 0)
+	for id := range r.PostStore {
+		post := r.PostStore[id]
+
+		posts = append(posts, &post)
+	}
+	return posts, nil
 }
 
 // Users is the resolver for the users field.

@@ -1,5 +1,8 @@
 name: "OpenTofu"
 description: "Deploy OpenTofu"
+outputs:
+  app_url:
+    value: ${{ steps.capture_output.outputs.app_url }}
 runs:
   using: "composite"
   steps:
@@ -21,4 +24,11 @@ runs:
       working-directory: ./infrastructure
       if: github.ref == 'refs/heads/main'
       run: tofu apply -auto-approve -input=false
+      shell: bash
+
+    - name: Capture outputs
+      working-directory: ./infrastructure/terraform
+      id: capture_output
+      run: |
+        echo "app_url=$(terraform output -raw url)" >> $GITHUB_OUTPUT
       shell: bash
