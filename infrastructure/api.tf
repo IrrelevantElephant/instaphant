@@ -9,7 +9,7 @@ resource "google_cloud_run_v2_service" "api" {
       image = var.api_image
       env {
         name  = "UIORIGIN"
-        value = "https://instaphant.irrelevantelephant.co.uk/"
+        value = "https://instaphant.irrelevantelephant.co.uk"
       }
     }
   }
