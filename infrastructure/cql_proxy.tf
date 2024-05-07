@@ -1,5 +1,5 @@
 resource "google_cloud_run_v2_service" "cql_proxy" {
-  name     = "api"
+  name     = "cql_proxy"
   location = var.region
   project  = var.project_id
 
