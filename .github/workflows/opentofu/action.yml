@@ -1,11 +1,18 @@
 name: "OpenTofu"
 description: "Deploy OpenTofu"
+inputs:
+  astra_api_token:
+    required: true
 outputs:
   app_url:
     value: ${{ steps.capture_output.outputs.app_url }}
 runs:
   using: "composite"
   steps:
+    - name: Set Environment Variables
+      shell: bash
+      run: |
+        echo "ASTRA_API_TOKEN=${{ inputs.astra_api_token }}" >> $GITHUB_ENV
 
     - name: OpenTofu Init
       working-directory: ./infrastructure

@@ -115,6 +115,8 @@ jobs:
       - name: "Apply OpenTofu"
         id: apply_opentofu
         uses: ./.github/workflows/opentofu
+        with:
+          astra_api_token: ${{ secrets.ASTRA_API_TOKEN }}
 
   deploy:
     needs: opentofu
