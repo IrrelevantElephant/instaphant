@@ -120,6 +120,14 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role=roles/iam.serviceAccountUser
 ```
 
+# Set GitHut secrets
+
+# Astra DB
+
+Generate an Astra token, this will be used by terraform to provision the Cassandra database resources.
+Create a pipeline variable names ASTRA_API_TOKEN and set it to the generated token.
+
 ## Set up GitHub Actions
 
-Configure the PROJECT_ID, PROJECT_NUMBER and DOCKER_REGISTRY env vars at the top of /.github/workflows/pipeline.yml with the values above.
+Configure the PROJECT_ID, PROJECT_NUMBER, DOCKER_REGISTRY and ASTRA_ORG_ID env vars at the top of /.github/workflows/pipeline.yml with the appropriate values.
+

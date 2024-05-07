@@ -4,6 +4,7 @@ env:
   PROJECT_ID: instaphant
   PROJECT_NUMBER: 78987012965
   DOCKER_REGISTRY: instaphant
+  ASTRA_ORG_ID: bc43b279-f9c3-432f-b4f2-f1dac2afa693
 
 on:
   push:
@@ -98,6 +99,7 @@ jobs:
         run: |
           echo "TF_VAR_api_image=${{ needs.docker.outputs.image }}" >> $GITHUB_ENV
           echo "TF_VAR_project_id=${{ env.PROJECT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_astra_org_id=${{ env.ASTRA_ORG_ID }}" >> $GITHUB_ENV
 
       - uses: "google-github-actions/auth@v2"
         with:

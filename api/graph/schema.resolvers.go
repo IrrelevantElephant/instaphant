@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/IrrelevantElephant/instaphant/api/graph/model"
 )
@@ -44,11 +45,37 @@ func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error
 // Posts is the resolver for the posts field.
 func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
 	posts := make([]*model.Post, 0)
-	for id := range r.PostStore {
-		post := r.PostStore[id]
+
+	session, _ := createConnection()
+	scanner := session.Query("SELECT (id, author_id, author_name, description, image) FROM instaphant.post;").WithContext(ctx).Iter().Scanner()
+	for scanner.Next() {
+		var (
+			id          string
+			author_id   string
+			author_name string
+			description string
+			image       string
+		)
+
+		err := scanner.Scan(&id, &author_id, &author_name, &description, &image)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		post := model.Post{
+			ID:          id,
+			Description: description,
+			Image:       image,
+			Author: &model.User{
+				ID:   author_id,
+				Name: author_name,
+			},
+		}
 
 		posts = append(posts, &post)
 	}
+
 	return posts, nil
 }
 

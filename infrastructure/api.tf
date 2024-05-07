@@ -11,6 +11,10 @@ resource "google_cloud_run_v2_service" "api" {
         name  = "UIORIGIN"
         value = "https://instaphant.irrelevantelephant.co.uk"
       }
+      env {
+        name  = "DATABASE_HOST"
+        value = google_cloud_run_v2_service.cql_proxy.uri
+      }
     }
   }
 }
