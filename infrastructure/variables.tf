@@ -13,6 +13,4 @@ variable "region" {
 
 variable "astra_org_id" {
   type = string
-  # TODO: delete
-  default = "bc43b279-f9c3-432f-b4f2-f1dac2afa693"
 }
