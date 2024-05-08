@@ -11,7 +11,7 @@ resource "google_cloud_run_v2_service" "cql_proxy" {
       startup_probe {
         http_get {
           path = "/readiness"
-          port: "8000"
+          port = "8000"
         }
       }
 
