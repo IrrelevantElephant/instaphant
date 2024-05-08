@@ -8,6 +8,12 @@ resource "google_cloud_run_v2_service" "cql_proxy" {
     containers {
       image = "datastax/cql-proxy:v0.1.5"
 
+      startup_probe {
+        http_get {
+          path = "/readiness"
+        }
+      }
+
       env {
         name  = "HTTP_BIND"
         value = "8080"
