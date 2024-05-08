@@ -7,8 +7,10 @@ resource "google_cloud_run_v2_service" "cql_proxy" {
   template {
     containers {
       image = "datastax/cql-proxy:v0.1.5"
-      ports {
-        container_port = 9042
+
+      env {
+        name  = "HTTP_BIND"
+        value = "8080"
       }
 
       env {
