@@ -14,7 +14,11 @@ resource "astra_role" "instaphant_database_administrator" {
     "db-cql", "db-table-alter", "db-table-create", "db-table-describe", "db-table-modify", "db-table-select",
     "db-keyspace-alter", "db-keyspace-describe", "db-keyspace-modify", "db-keyspace-authorize", "db-keyspace-drop", "db-keyspace-create", "db-keyspace-grant",
   ]
-  resources = ["drn:astra:org:${var.astra_org_id}:db:${astra_database.instaphant_database.id}:*", "drn:astra:org:${var.astra_org_id}:db:${astra_database.instaphant_database.id}:keyspace:*", "drn:astra:org:${var.astra_org_id}:db:${astra_database.instaphant_database.id}:keyspace:*:table:*"]
+  resources = [
+    "drn:astra:org:${var.astra_org_id}:db:*",
+    "drn:astra:org:${var.astra_org_id}:db:*:keyspace:*",
+    "drn:astra:org:${var.astra_org_id}:db:*:keyspace:*:table:*"
+  ]
 }
 
 resource "astra_token" "instaphant_database_token" {
