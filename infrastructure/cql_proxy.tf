@@ -14,6 +14,11 @@ resource "google_cloud_run_v2_service" "cql_proxy" {
       }
 
       env {
+        name  = "HEALTH_CHECK"
+        value = "true"
+      }
+
+      env {
         name  = "ASTRA_TOKEN"
         value = astra_token.instaphant_database_token.token
       }
