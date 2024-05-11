@@ -46,7 +46,12 @@ func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error
 func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
 	posts := make([]*model.Post, 0)
 
-	session, _ := createConnection()
+	session, err := createConnection()
+
+	if err != nil {
+		log.Fatalf("Issue creating connection to database: %s", err.Error())
+	}
+
 	scanner := session.Query("SELECT (id, author_id, author_name, description, image) FROM instaphant.post;").WithContext(ctx).Iter().Scanner()
 	for scanner.Next() {
 		var (
