@@ -15,12 +15,6 @@ func createConnection() (*gocql.Session, error) {
 	}
 
 	cluster := gocql.NewCluster(database)
-
-	cluster.Authenticator = gocql.PasswordAuthenticator{
-		Username: "AstraCS",
-		Password: "OOIaejDdykKrfUdMwrEvfONl:05b0773b44c4e34aef41229d61f35925b781e9c5ff4b67c79d0b115ce81a3907",
-	}
-
 	cluster.Keyspace = "instaphant"
 	session, err := cluster.CreateSession()
 	return session, err
