@@ -13,7 +13,7 @@ resource "google_cloud_run_v2_service" "api" {
       }
       env {
         name  = "DATABASE_HOST"
-        value = google_cloud_run_v2_service.cql_proxy.uri
+        value = replace(google_cloud_run_v2_service.cql_proxy.uri, "https://", "")
       }
     }
   }

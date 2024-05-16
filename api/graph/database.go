@@ -1,17 +1,18 @@
 package graph
 
 import (
+	"log"
+	"os"
+
 	"github.com/gocql/gocql"
 )
 
 func createConnection() (*gocql.Session, error) {
-	// database, exists := os.LookupEnv("DATABASE_HOST")
+	database, exists := os.LookupEnv("DATABASE_HOST")
 
-	// if !exists {
-	// 	log.Fatal("Couldn't find DATABASE_HOST")
-	// }
-
-	database := "https://ebd953c8-078e-4bac-abcb-d700e3cf0f05-us-east1.apps.astra.datastax.com"
+	if !exists {
+		log.Fatal("Couldn't find DATABASE_HOST")
+	}
 
 	cluster := gocql.NewCluster(database)
 
