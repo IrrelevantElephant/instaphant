@@ -80,8 +80,12 @@ jobs:
           tags: |
             europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/${{ matrix.image }}:latest
             europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/${{ matrix.image }}:${{ needs.tag.outputs.version }}
+      - name: Set image output
+        run: echo "image=europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/${{ matrix.image }}:${{ needs.tag.outputs.version }}" >> $GITHUB_ENV
+    # Hack to get the image names
     outputs:
-      image: europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/${{ matrix.image }}:${{ needs.tag.outputs.version }}
+      image_api: ${{ matrix.image == 'api' && 'europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:${{ needs.tag.outputs.version }}' }}
+      image_databasemigrator: ${{ matrix.image == 'databasemigrator' && 'europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/databasemigrator:${{ needs.tag.outputs.version }}' }}
 
   opentofu:
     name: "OpenTofu"
@@ -101,8 +105,8 @@ jobs:
       - name: Set Environment Variables
         shell: bash
         run: |
-          echo "TF_VAR_api_image=${{ needs.docker.outputs.image.api }}" >> $GITHUB_ENV
-          echo "TF_VAR_database_migrator_image=${{ needs.docker.outputs.image.databasemigrator }}" >> $GITHUB_ENV
+          echo "TF_VAR_api_image=${{ needs.docker.outputs.image_api }}" >> $GITHUB_ENV
+          echo "TF_VAR_database_migrator_image=${{ needs.docker.outputs.image_databasemigrator }}" >> $GITHUB_ENV
           echo "TF_VAR_project_id=${{ env.PROJECT_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_astra_org_id=${{ env.ASTRA_ORG_ID }}" >> $GITHUB_ENV
           echo "ASTRA_API_TOKEN=${{ secrets.ASTRA_API_TOKEN }}" >> $GITHUB_ENV
