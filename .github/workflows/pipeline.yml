@@ -84,8 +84,8 @@ jobs:
         run: echo "image=europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/${{ matrix.image }}:${{ needs.tag.outputs.version }}" >> $GITHUB_ENV
     # Hack to get the image names
     outputs:
-      image_api: ${{ matrix.image == 'api' && 'europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:${{ needs.tag.outputs.version }}' }}
-      image_databasemigrator: ${{ matrix.image == 'databasemigrator' && 'europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/databasemigrator:${{ needs.tag.outputs.version }}' }}
+      image_api: "europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/api:${{ needs.tag.outputs.version }}"
+      image_databasemigrator: "europe-west2-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.DOCKER_REGISTRY }}/databasemigrator:${{ needs.tag.outputs.version }}"
 
   opentofu:
     name: "OpenTofu"
