@@ -30,19 +30,19 @@ services:
           ignore:
             - "../ui/node_modules"
 
-  # database:
-  #   image: cassandra
-  #   networks:
-  #     - instaphant
-  #   ports:
-  #     - "9042:9042"
-  #   volumes:
-  #     - ../cassandra/cassandra-env.sh:/etc/cassandra/cassandra-env.sh
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "cqlsh -e 'SELECT * FROM system_schema.keyspaces;'"]
-  #     interval: 15s
-  #     timeout: 10s
-  #     retries: 5
+  database:
+    image: cassandra
+    networks:
+      - instaphant
+    ports:
+      - "9042:9042"
+    volumes:
+      - ../cassandra/cassandra-env.sh:/etc/cassandra/cassandra-env.sh
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'SELECT * FROM system_schema.keyspaces;'"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   migrator:
     build:
@@ -54,9 +54,9 @@ services:
       - CQLVERSION=3.4.6
     networks:
       - instaphant
-    # depends_on:
-    #   database:
-    #     condition: service_healthy
+    depends_on:
+      database:
+        condition: service_healthy
     develop:
       watch:
         - path: ../database/

@@ -1,7 +1,3 @@
-variable "api_image" {
-  type = string
-}
-
 variable "project_id" {
   type = string
 }
@@ -14,3 +10,13 @@ variable "region" {
 variable "astra_org_id" {
   type = string
 }
+
+# Docker images
+
+variable "api_image" {
+  type = string
+}
+
+# variable "database_migrator_image" {
+#   type = string
+# }
