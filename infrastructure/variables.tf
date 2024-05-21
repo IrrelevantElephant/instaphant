@@ -17,6 +17,6 @@ variable "api_image" {
   type = string
 }
 
-# variable "database_migrator_image" {
-#   type = string
-# }
+variable "database_migrator_image" {
+  type = string
+}
