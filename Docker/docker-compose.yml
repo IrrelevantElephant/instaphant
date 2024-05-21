@@ -47,7 +47,7 @@ services:
   migrator:
     build:
       dockerfile: Dockerfile
-      context: ../database
+      context: ../databasemigrator
     environment:
       - CQLSH_HOST=database
       - CQLSH_PORT=9042
@@ -59,7 +59,7 @@ services:
         condition: service_healthy
     develop:
       watch:
-        - path: ../database/
+        - path: ../databasemigrator/
           action: rebuild
 
 networks:
