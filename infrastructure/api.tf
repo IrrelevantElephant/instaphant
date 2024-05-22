@@ -33,8 +33,13 @@ resource "google_cloud_run_v2_service" "api" {
       }
 
       env {
-        name  = "ASTRA_TOKEN"
-        value = astra_token.instaphant_database_token.token
+        name = "ASTRA_TOKEN"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.astra_token
+            version = "1"
+          }
+        }
       }
 
       env {

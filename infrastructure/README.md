@@ -23,7 +23,7 @@ https://support.google.com/googleapi/answer/6158867?hl=en
 ## Enable GCloud API's
 
 ```shell
-    gcloud services enable run.googleapis.com compute.googleapis.com artifactregistry.googleapis.com iam.googleapis.com \
+    gcloud services enable run.googleapis.com compute.googleapis.com artifactregistry.googleapis.com iam.googleapis.com secretmanager.googleapis.com \
     --project=$PROJECT_ID
 ```
 
