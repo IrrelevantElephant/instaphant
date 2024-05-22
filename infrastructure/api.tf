@@ -36,7 +36,7 @@ resource "google_cloud_run_v2_service" "api" {
         name = "ASTRA_TOKEN"
         value_source {
           secret_key_ref {
-            secret  = google_secret_manager_secret.astra_token
+            secret  = google_secret_manager_secret.astra_token.secret_id
             version = "1"
           }
         }
