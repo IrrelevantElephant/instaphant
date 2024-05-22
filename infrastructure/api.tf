@@ -59,6 +59,13 @@ data "google_iam_policy" "noauth" {
   }
 }
 
+resource "google_secret_manager_secret_iam_member" "secret-access" {
+  secret_id = google_secret_manager_secret.astra_token.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  depends_on = [google_secret_manager_secret.astra_token]
+}
+
 resource "google_cloud_run_service_iam_policy" "noauth" {
   location = google_cloud_run_v2_service.api.location
   project  = google_cloud_run_v2_service.api.project
