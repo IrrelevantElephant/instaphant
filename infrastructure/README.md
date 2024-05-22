@@ -96,7 +96,7 @@ gcloud iam service-accounts add-iam-policy-binding "default@$PROJECT_ID.iam.gser
 * `roles/artifactregistry.admin`
 * `roles/run.admin`
 * `roles/iam.serviceAccountUser`
-* `roles/secretmanager.secretVersionManage`
+* `roles/secretmanager.admin`
 
 ```shell
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -125,7 +125,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 ```shell
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=serviceAccount:default@$PROJECT_ID.iam.gserviceaccount.com \
-    --role=roles/secretmanager.secretVersionManager
+    --role=roles/secretmanager.admin
 ```
 
 # Set GitHut secrets
