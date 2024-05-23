@@ -62,7 +62,7 @@ data "google_iam_policy" "noauth" {
 resource "google_secret_manager_secret_iam_member" "secret-access" {
   secret_id  = google_secret_manager_secret.astra_token.id
   role       = "roles/secretmanager.secretAccessor"
-  member     = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  member     = "serviceAccount:${var.project_id}-compute@developer.gserviceaccount.com"
   depends_on = [google_secret_manager_secret.astra_token]
 }
 
