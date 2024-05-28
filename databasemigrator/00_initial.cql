@@ -1,4 +1,4 @@
-CREATE KEYSPACE IF NOT EXISTS instaphant WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '1' };
+CONSISTENCY QUORUM;
 
 CREATE TABLE IF NOT EXISTS instaphant.post (
     id text PRIMARY KEY,

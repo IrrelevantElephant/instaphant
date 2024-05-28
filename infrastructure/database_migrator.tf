@@ -8,32 +8,18 @@ resource "google_cloud_run_v2_job" "database_migrator" {
         image = var.database_migrator_image
 
         env {
-          name  = "CQLSH_HOST"
-          value = "localhost"
-        }
-
-        env {
-          name  = "CQLSH_PORT"
-          value = 9042
-        }
-
-        env {
-          name  = "CQLSH_VERSION"
-          value = "3.4.6"
-        }
-      }
-
-      containers {
-        image = "datastax/cql-proxy:v0.1.5"
-
-        env {
           name  = "HEALTH_CHECK"
           value = "true"
         }
 
         env {
-          name  = "ASTRA_TOKEN"
-          value = astra_token.instaphant_database_token.token
+          name = "ASTRA_TOKEN"
+          value_source {
+            secret_key_ref {
+              secret  = google_secret_manager_secret.astra_token.secret_id
+              version = "latest"
+            }
+          }
         }
 
         env {
