@@ -37,7 +37,7 @@ resource "google_cloud_run_v2_service" "api" {
         value_source {
           secret_key_ref {
             secret  = google_secret_manager_secret.astra_token.secret_id
-            version = "1"
+            version = "latest"
           }
         }
       }
@@ -60,9 +60,10 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_secret_manager_secret_iam_member" "secret-access" {
-  secret_id  = google_secret_manager_secret.astra_token.id
-  role       = "roles/secretmanager.secretAccessor"
-  member     = "serviceAccount:${var.project_id}-compute@developer.gserviceaccount.com"
+  secret_id = google_secret_manager_secret.astra_token.id
+  role      = "roles/secretmanager.secretAccessor"
+  # TODO: parametise this
+  member     = "serviceAccount:78987012965-compute@developer.gserviceaccount.com"
   depends_on = [google_secret_manager_secret.astra_token]
 }
 
