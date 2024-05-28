@@ -126,6 +126,26 @@ jobs:
         id: apply_opentofu
         uses: ./.github/workflows/opentofu
 
+  migrations:
+    name: "Migrations"
+    needs: opentofu
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+    - uses: "google-github-actions/auth@v2"
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        workload_identity_provider: "projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/wif-pool/providers/wif-provider"
+        service_account: "default@${{ env.PROJECT_ID }}.iam.gserviceaccount.com"
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        version: '>= 363.0.0'
+    - name: 'Execute migration job'
+      run: 'gcloud run jobs execute databasemigrator --wait --region europe-west2'
+
   deploy:
     needs: opentofu
     runs-on: ubuntu-latest
