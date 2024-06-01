@@ -81,6 +81,11 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
 		posts = append(posts, &post)
 	}
 
+	err = scanner.Err()
+	if err != nil {
+		log.Print(err)
+	}
+
 	return posts, nil
 }
 
