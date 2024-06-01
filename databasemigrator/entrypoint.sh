@@ -2,11 +2,13 @@
 
 set -m
 
-cql-proxy &
+if [ "$CQLPROXY" == "true" ]; then
+  cql-proxy &
+fi
 
 # defaults for cqlsh
-export CQLVERSION=3.4.5
-export CQLSH_HOST=0.0.0.0
+export CQLVERSION=${CQLVERSION:-"3.4.5"}
+export CQLSH_HOST=${CQLSH_HOST:-"0.0.0.0"}
 export CQLSH_PORT=9042
 
 cqlsh=( cqlsh --cqlversion ${CQLVERSION} )

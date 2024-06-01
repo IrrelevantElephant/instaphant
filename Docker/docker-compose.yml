@@ -52,6 +52,7 @@ services:
       - CQLSH_HOST=database
       - CQLSH_PORT=9042
       - CQLVERSION=3.4.6
+      - CQLPROXY=false
     networks:
       - instaphant
     depends_on:
