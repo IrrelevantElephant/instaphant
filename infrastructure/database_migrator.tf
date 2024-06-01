@@ -26,6 +26,11 @@ resource "google_cloud_run_v2_job" "database_migrator" {
           name  = "ASTRA_DATABASE_ID"
           value = astra_database.instaphant_database.id
         }
+
+        env {
+          name  = "CQLPROXY"
+          value = true
+        }
       }
     }
   }
