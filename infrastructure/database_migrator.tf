@@ -36,6 +36,11 @@ resource "google_cloud_run_v2_job" "database_migrator" {
           name  = "CQLSH_HOST"
           value = "0.0.0.0"
         }
+
+        env {
+          name  = "CQLVERSION"
+          value = "3.4.5"
+        }
       }
     }
   }
