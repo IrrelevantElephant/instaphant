@@ -1,0 +1,17 @@
+{
+  "name": "e2etests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "local": "PLAYWRIGHT_BASEURL=http://localhost:8000 exec playwright test",
+  "remote": "PLAYWRIGHT_BASEURL=https://instaphant.irrelevantelephant.co.uk/ exec playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.13.0"
+  }
+}

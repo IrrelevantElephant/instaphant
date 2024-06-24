@@ -81,3 +81,34 @@ dist-ssr
 
 # local testing
 set-vars.sh
+
+# playwright
+/test-results/
+/tests/coverage-report
+.local-browsers/
+/.dev_profile*
+*.swp
+*.pyc
+/packages/playwright-core/src/generated
+/packages/playwright-ct-core/src/generated
+packages/*/lib/
+drivers/
+.android-sdk/
+.gradle/
+nohup.out
+.trace
+.tmp
+allure*
+blob-report
+playwright-report
+test-results
+/demo/
+/packages/*/LICENSE
+/packages/*/NOTICE
+/packages/playwright/README.md
+/packages/playwright-test/README.md
+/packages/playwright-core/api.json
+/tests/installation/output/
+/tests/installation/.registry.json
+.cache/
+.eslintcache

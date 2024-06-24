@@ -1,0 +1,7 @@
+services:
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PLAYWRIGHT_BASEURL=https://instaphant.irrelevantelephant.co.uk/
